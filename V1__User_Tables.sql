@@ -78,8 +78,8 @@ CREATE TABLE user_name
     first_name  VARCHAR(30) NOT NULL,
     middle_name VARCHAR(30),
     last_name   VARCHAR(30),
-    full_name   VARCHAR(92) GENERATED ALWAYS AS (TRIM(first_name || ' ' || COALESCE(middle_name || ' ', '') ||
-                                                      COALESCE(last_name, ''))) STORED,
+    full_name   VARCHAR(92) NOT NULL GENERATED ALWAYS AS (TRIM(first_name || ' ' || COALESCE(middle_name || ' ', '') ||
+                                                               COALESCE(last_name, ''))) STORED,
     CONSTRAINT PK_User_Name_Id PRIMARY KEY (id),
     CONSTRAINT UQ_User_Name UNIQUE (first_name, middle_name, last_name)
 );
@@ -119,7 +119,7 @@ CREATE TABLE aadhaar_detail
     address_id        INT         NOT NULL,
     post_office       VARCHAR(30) NOT NULL,
     gender            VARCHAR(1)  NOT NULL,
-    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at        TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_Aadhaar_Id PRIMARY KEY (id),
     CONSTRAINT FK_Aadhaar_Name FOREIGN KEY (name) REFERENCES user_name (id),
     CONSTRAINT FK_Aadhaar_CO FOREIGN KEY (co) REFERENCES user_name (id),
@@ -142,7 +142,7 @@ CREATE TABLE pan_detail
     dob_check      BOOLEAN     NOT NULL,
     category       VARCHAR(20) NOT NULL,
     status         VARCHAR(20) NOT NULL,
-    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_Pan_Detail_Id PRIMARY KEY (id),
     CONSTRAINT FK_Pan_Name FOREIGN KEY (name) REFERENCES user_name (id),
     CONSTRAINT FK_Pan_Address FOREIGN KEY (address_id) REFERENCES address (id),

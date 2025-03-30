@@ -1,0 +1,39 @@
+name: 'Flyway Migrate Dev'
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        ref: dev
+
+      - name: Download Postgres JDBC Driver
+        run: |
+          wget -O postgresql.jar https://jdbc.postgresql.org/download/postgresql-42.7.5.jar
+      
+      - name: Clean and Migrate Flyway Migration
+        run: |
+          mkdir -p drivers migrations
+          mv postgresql.jar drivers/
+          mv *.sql migrations/
+          docker run --rm \
+            -v ${{ github.workspace }}/drivers:/flyway/drivers \
+            -v ${{ github.workspace }}/migrations:/flyway/sql \
+            flyway/flyway:latest \
+            -url=${{ secrets.DEV_FLYWAY_URL }} \
+            -user=${{ secrets.DEV_FLYWAY_USER }} \
+            -password=${{ secrets.DEV_FLYWAY_PASSWORD }} \
+            clean
+
+          docker run --rm \
+            -v ${{ github.workspace }}/drivers:/flyway/drivers \
+            -v ${{ github.workspace }}/migrations:/flyway/sql \
+            flyway/flyway:latest \
+            -url=${{ secrets.DEV_FLYWAY_URL }} \
+            -user=${{ secrets.DEV_FLYWAY_USER }} \
+            -password=${{ secrets.DEV_FLYWAY_PASSWORD }} \
+            migrate
