@@ -33,9 +33,10 @@ CREATE TABLE user_balance
     CONSTRAINT FK_User_Balance FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 
-CREATE TABLE funds_transactions
+CREATE TABLE balance_transactions
 (
     transaction_id        INT                      NOT NULL,
+    user_id               INT                      NOT NULL,
     transaction_type      deposit_transaction_type NOT NULL,
     current_status        status                   NOT NULL,
     bank_id               INT                      NOT NULL,
@@ -44,8 +45,9 @@ CREATE TABLE funds_transactions
     original_amount       FLOAT4                   NOT NULL,
     safety_cut_amount     FLOAT4                   NOT NULL,
     safety_cut_percentage FLOAT4                   NOT NULL,
-    CONSTRAINT PK_Funds_Transactions_Id PRIMARY KEY (bank_id),
-    CONSTRAINT UQ_Transaction_Id UNIQUE (transaction_id)
+    CONSTRAINT PK_Balance_Transactions_Id PRIMARY KEY (transaction_id),
+    CONSTRAINT FK_Balance_Transaction_User FOREIGN KEY (user_id) REFERENCES "user" (id),
+    CONSTRAINT FK_Balance_Transaction_Bank FOREIGN KEY (bank_id) REFERENCES bank_account (id)
 );
 
 ALTER TABLE user_sessions
