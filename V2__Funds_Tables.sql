@@ -21,9 +21,9 @@ CREATE TABLE user_balance
     available_non_liq_margin FLOAT4 NOT NULL,
     available_margin FLOAT4 NOT NULL GENERATED ALWAYS AS (available_liq_margin + available_non_liq_margin) STORED,
     blocked_margin FLOAT4 NOT NULL,
-    total_margin FLOAT4 NOT NULL GENERATED ALWAYS AS (available_margin + blocked_margin) STORED,
-    total_available_balance FLOAT4 NOT NULL GENERATED ALWAYS AS (available_cash + available_margin) STORED,
-    total_balance FLOAT4 GENERATED ALWAYS AS (total_cash + total_margin) STORED,
+    total_margin FLOAT4 NOT NULL GENERATED ALWAYS AS (available_liq_margin + available_non_liq_margin + blocked_margin) STORED,
+    total_available_balance FLOAT4 NOT NULL GENERATED ALWAYS AS (available_cash + available_liq_margin + available_non_liq_margin) STORED,
+    total_balance FLOAT4 GENERATED ALWAYS AS (available_cash + blocked_cash + available_liq_margin + available_non_liq_margin + blocked_margin) STORED,
     CONSTRAINT PK_User_Balance_Id PRIMARY KEY (id),
     CONSTRAINT FK_User_Balance FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
