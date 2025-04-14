@@ -42,12 +42,11 @@ CREATE TABLE user_balance
 
 CREATE TABLE balance_transactions
 (
-    transaction_id        INT                        NOT NULL,
+    transaction_id        VARCHAR(30)                NOT NULL,
     user_id               INT                        NOT NULL,
     transaction_type      deposit_transaction_type   NOT NULL,
     status                balance_transaction_status NOT NULL,
     bank_id               INT                        NOT NULL,
-    remarks               TEXT                       NOT NULL,
     amount                FLOAT4                     NOT NULL,
     safety_cut_amount     FLOAT4                     NOT NULL,
     safety_cut_percentage FLOAT4                     NOT NULL,
