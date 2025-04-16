@@ -42,7 +42,8 @@ CREATE TABLE user_balance
 
 CREATE TABLE balance_transactions
 (
-    transaction_id        VARCHAR(30)                NOT NULL,
+    reference_no          VARCHAR(30)                NOT NULL,
+    transaction_id        VARCHAR(20)                NOT NULL,
     user_id               INT                        NOT NULL,
     transaction_type      deposit_transaction_type   NOT NULL,
     status                balance_transaction_status NOT NULL,
@@ -52,7 +53,8 @@ CREATE TABLE balance_transactions
     safety_cut_percentage FLOAT4                     NOT NULL,
     created_at            TIMESTAMP                  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at            TIMESTAMP                  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT PK_Balance_Transactions_Id PRIMARY KEY (transaction_id),
+    CONSTRAINT PK_Balance_Reference_no PRIMARY KEY (reference_no),
+    CONSTRAINT UQ_Balance_Transaction_Id UNIQUE (transaction_id),
     CONSTRAINT FK_Balance_Transaction_User FOREIGN KEY (user_id) REFERENCES "user" (id),
     CONSTRAINT FK_Balance_Transaction_Bank FOREIGN KEY (bank_id) REFERENCES bank_account (id)
 );
