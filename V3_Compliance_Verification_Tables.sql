@@ -1,0 +1,49 @@
+CREATE TYPE compliance_verification_status AS ENUM ('pending', 'verified', 'rejected');
+
+-- Table
+CREATE TABLE signup_verification_status
+(
+    id                         INT                            NOT NULL,
+    pan_status                 compliance_verification_status NOT NULL DEFAULT 'pending',
+    aadhaar_status             compliance_verification_status NOT NULL DEFAULT 'pending',
+    bank_status                compliance_verification_status NOT NULL DEFAULT 'pending',
+    address_status             compliance_verification_status NOT NULL DEFAULT 'pending',
+    signature_status           compliance_verification_status NOT NULL DEFAULT 'pending',
+    ipv_status                 compliance_verification_status NOT NULL DEFAULT 'pending',
+    front_office_status        compliance_verification_status NOT NULL DEFAULT 'pending',
+    trading_preferences_status compliance_verification_status NOT NULL DEFAULT 'pending',
+    nominee_status             compliance_verification_status NOT NULL DEFAULT 'pending',
+    other_documents_status     compliance_verification_status NOT NULL DEFAULT 'pending',
+    esign_status               compliance_verification_status NOT NULL DEFAULT 'pending',
+    overall_status             compliance_verification_status NOT NULL GENERATED ALWAYS AS (
+        CASE
+            WHEN pan_status = 'rejected' OR
+                 aadhaar_status = 'rejected' OR
+                 bank_status = 'rejected' OR
+                 address_status = 'rejected' OR
+                 signature_status = 'rejected' OR
+                 ipv_status = 'rejected' OR
+                 front_office_status = 'rejected' OR
+                 trading_preferences_status = 'rejected' OR
+                 nominee_status = 'rejected' OR
+                 other_documents_status = 'rejected' OR
+                 esign_status = 'rejected' THEN 'rejected'
+            WHEN pan_status = 'pending' OR
+                 aadhaar_status = 'pending' OR
+                 bank_status = 'pending' OR
+                 address_status = 'pending' OR
+                 signature_status = 'pending' OR
+                 ipv_status = 'pending' OR
+                 front_office_status = 'pending' OR
+                 trading_preferences_status = 'pending' OR
+                 nominee_status = 'pending' OR
+                 other_documents_status = 'pending' OR
+                 esign_status = 'pending' THEN 'pending'
+            ELSE 'verified'
+            END
+        ) STORED,
+    created_at                 TIMESTAMP                      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at                 TIMESTAMP                      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_Signup_Verification_Status_Id PRIMARY KEY (id),
+    CONSTRAINT FK_Signup_Checkpoint_Verification FOREIGN KEY (id) REFERENCES signup_checkpoints (id)
+);
