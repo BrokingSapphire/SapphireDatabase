@@ -27,7 +27,7 @@ CREATE TABLE signup_verification_status
                  trading_preferences_status = 'rejected' OR
                  nominee_status = 'rejected' OR
                  other_documents_status = 'rejected' OR
-                 esign_status = 'rejected' THEN 'rejected'
+                 esign_status = 'rejected' THEN 'rejected'::compliance_verification_status
             WHEN pan_status = 'pending' OR
                  aadhaar_status = 'pending' OR
                  bank_status = 'pending' OR
@@ -38,8 +38,8 @@ CREATE TABLE signup_verification_status
                  trading_preferences_status = 'pending' OR
                  nominee_status = 'pending' OR
                  other_documents_status = 'pending' OR
-                 esign_status = 'pending' THEN 'pending'
-            ELSE 'verified'
+                 esign_status = 'pending' THEN 'pending'::compliance_verification_status
+            ELSE 'verified'::compliance_verification_status
             END
         ) STORED,
     created_at                 TIMESTAMP                      NOT NULL DEFAULT CURRENT_TIMESTAMP,
