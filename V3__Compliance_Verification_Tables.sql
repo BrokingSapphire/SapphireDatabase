@@ -1,20 +1,20 @@
-CREATE TYPE compliance_verification_status AS ENUM ('pending', 'verified', 'rejected');
+CREATE TYPE compliance_verification_status AS ENUM ('processing', 'pending', 'verified', 'rejected');
 
 -- Table
 CREATE TABLE signup_verification_status
 (
     id                         INT                            NOT NULL,
-    pan_status                 compliance_verification_status NOT NULL DEFAULT 'pending',
-    aadhaar_status             compliance_verification_status NOT NULL DEFAULT 'pending',
-    bank_status                compliance_verification_status NOT NULL DEFAULT 'pending',
-    address_status             compliance_verification_status NOT NULL DEFAULT 'pending',
-    signature_status           compliance_verification_status NOT NULL DEFAULT 'pending',
-    ipv_status                 compliance_verification_status NOT NULL DEFAULT 'pending',
-    front_office_status        compliance_verification_status NOT NULL DEFAULT 'pending',
-    trading_preferences_status compliance_verification_status NOT NULL DEFAULT 'pending',
-    nominee_status             compliance_verification_status NOT NULL DEFAULT 'pending',
-    other_documents_status     compliance_verification_status NOT NULL DEFAULT 'pending',
-    esign_status               compliance_verification_status NOT NULL DEFAULT 'pending',
+    pan_status                 compliance_verification_status NOT NULL DEFAULT 'processing',
+    aadhaar_status             compliance_verification_status NOT NULL DEFAULT 'processing',
+    bank_status                compliance_verification_status NOT NULL DEFAULT 'processing',
+    address_status             compliance_verification_status NOT NULL DEFAULT 'processing',
+    signature_status           compliance_verification_status NOT NULL DEFAULT 'processing',
+    ipv_status                 compliance_verification_status NOT NULL DEFAULT 'processing',
+    front_office_status        compliance_verification_status NOT NULL DEFAULT 'processing',
+    trading_preferences_status compliance_verification_status NOT NULL DEFAULT 'processing',
+    nominee_status             compliance_verification_status NOT NULL DEFAULT 'processing',
+    other_documents_status     compliance_verification_status NOT NULL DEFAULT 'processing',
+    esign_status               compliance_verification_status NOT NULL DEFAULT 'processing',
     overall_status             compliance_verification_status NOT NULL GENERATED ALWAYS AS (
         CASE
             WHEN pan_status = 'rejected' OR
@@ -28,6 +28,17 @@ CREATE TABLE signup_verification_status
                  nominee_status = 'rejected' OR
                  other_documents_status = 'rejected' OR
                  esign_status = 'rejected' THEN 'rejected'::compliance_verification_status
+            WHEN pan_status = 'processing' OR
+                 aadhaar_status = 'processing' OR
+                 bank_status = 'processing' OR
+                 address_status = 'processing' OR
+                 signature_status = 'processing' OR
+                 ipv_status = 'processing' OR
+                 front_office_status = 'processing' OR
+                 trading_preferences_status = 'processing' OR
+                 nominee_status = 'processing' OR
+                 other_documents_status = 'processing' OR
+                 esign_status = 'processing' THEN 'processing'::compliance_verification_status
             WHEN pan_status = 'pending' OR
                  aadhaar_status = 'pending' OR
                  bank_status = 'pending' OR
