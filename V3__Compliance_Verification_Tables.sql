@@ -58,3 +58,12 @@ CREATE TABLE signup_verification_status
     CONSTRAINT PK_Signup_Verification_Status_Id PRIMARY KEY (id),
     CONSTRAINT FK_Signup_Checkpoint_Verification FOREIGN KEY (id) REFERENCES signup_checkpoints (id)
 );
+
+CREATE TABLE compliance_processing (
+    officer_id INT NOT NULL,
+    user_id INT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_Officer_Compliance_Id FOREIGN KEY (officer_id) REFERENCES "user" (id),
+    CONSTRAINT FK_User_Compliance_Id FOREIGN KEY (user_id) REFERENCES "user" (id),
+    CONSTRAINT UQ_Office_To_User UNIQUE (officer_id, user_id)
+);
