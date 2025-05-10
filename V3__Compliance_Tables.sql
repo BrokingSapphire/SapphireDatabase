@@ -65,5 +65,5 @@ CREATE TABLE compliance_processing (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_Compliance_Checkpoint_Id PRIMARY KEY (checkpoint_id),
     CONSTRAINT FK_Officer_Compliance_Id FOREIGN KEY (officer_id) REFERENCES "user" (id),
-    CONSTRAINT FK_Checkpoint_Compliance_Id FOREIGN KEY (checkpoint_id) REFERENCES "signup_checkpoints" (id),
+    CONSTRAINT FK_Checkpoint_Compliance_Id FOREIGN KEY (checkpoint_id) REFERENCES "signup_checkpoints" (id)
 );
