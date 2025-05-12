@@ -6,29 +6,24 @@ ALTER TABLE bank_account
   ADD COLUMN account_type account_type DEFAULT 'savings';
 
 ALTER TABLE bank_account 
-ALTER COLUMN account_type DROP DEFAULT;
-
-ALTER TABLE bank_account 
-  DROP CONSTRAINT IF EXISTS uq_bank_account,
-  ADD CONSTRAINT uq_bank_account UNIQUE (account_no, ifsc_code);
+  ALTER COLUMN account_type DROP DEFAULT;
 
 ALTER TABLE signup_checkpoints 
   ALTER COLUMN occupation TYPE occupation USING 'self-employed'::occupation;
 
 ALTER TABLE nominees 
-  DROP COLUMN pan_id, 
-  DROP COLUMN aadhaar_id, 
-  DROP COLUMN relationship;
-
-
-ALTER TABLE nominees 
   ADD COLUMN id_type VARCHAR(10) NOT NULL DEFAULT 'PAN', 
-  ADD COLUMN gov_id VARCHAR(16) NOT NULL, 
-  ADD COLUMN relation nominee_relation NOT NULL DEFAULT 'Other', 
   ADD COLUMN created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL, 
   ADD COLUMN updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL;
-
+ALTER TABLE nominees
+  ALTER COLUMN relationship TYPE nominee_relation USING 'Other'::nominee_relation;
 
 ALTER TABLE nominees 
   ADD CONSTRAINT CHK_Share CHECK (share > 0 AND share <= 100);
 
+ALTER TABLE nominees
+  ADD CONSTRAINT CHK_ID_Type_Consistency 
+  CHECK (
+    (id_type = 'PAN' AND pan_id IS NOT NULL AND aadhaar_id IS NULL) OR
+    (id_type = 'AADHAAR' AND aadhaar_id IS NOT NULL AND pan_id IS NULL)
+  );
