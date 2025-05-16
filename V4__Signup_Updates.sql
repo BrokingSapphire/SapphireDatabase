@@ -12,9 +12,9 @@ ALTER TABLE signup_checkpoints
     ALTER COLUMN occupation TYPE occupation USING 'self employed'::occupation;
 
 ALTER TABLE nominees
-    ADD COLUMN govt_id    VARCHAR(12)             NOT NULL DEFAULT '',
-    ADD COLUMN created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-    ADD COLUMN updated_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    ADD COLUMN govt_id    VARCHAR(12)                         NOT NULL DEFAULT '',
+    ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     ALTER COLUMN relationship TYPE nominee_relation USING 'Other'::nominee_relation,
     DROP CONSTRAINT FK_Nominees_Pan,
     DROP CONSTRAINT FK_Nominees_Aadhaar,

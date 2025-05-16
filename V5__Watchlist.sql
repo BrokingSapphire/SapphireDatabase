@@ -2,9 +2,11 @@ CREATE TYPE stock_exchange AS ENUM ('NSE', 'BSE', 'MCX', 'NCDEX');
 
 CREATE TABLE user_watchlist_category
 (
-    id       SERIAL,
-    user_id  INT         NOT NULL,
-    category VARCHAR(20) NOT NULL,
+    id         SERIAL,
+    user_id    INT         NOT NULL,
+    category   VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_User_Watchlist_Category PRIMARY KEY (id),
     CONSTRAINT FK_User_To_Watchlist_Category FOREIGN KEY (user_id) REFERENCES "user" (id),
     CONSTRAINT UQ_User_Watchlist_Category UNIQUE (user_id, category)
