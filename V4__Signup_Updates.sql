@@ -20,5 +20,7 @@ ALTER TABLE nominees
     DROP CONSTRAINT FK_Nominees_Aadhaar,
     DROP COLUMN aadhaar_id,
     DROP COLUMN pan_id,
-    ALTER COLUMN govt_id DROP DEFAULT,
     ADD CONSTRAINT CHK_Share CHECK (share > 0.0 AND share <= 100.0);
+
+ALTER TABLE nominees
+    ALTER COLUMN govt_id DROP DEFAULT;
