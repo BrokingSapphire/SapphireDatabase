@@ -10,6 +10,9 @@ ALTER TABLE bank_to_user
 ALTER TABLE nominees_to_user
     DROP CONSTRAINT FK_Nominees_To_User_User_Id;
 
+ALTER TABLE user_password_details
+    DROP CONSTRAINT FK_User_Login_Id;
+
 ALTER TABLE user_sessions
     DROP CONSTRAINT FK_User_Session_User;
 
@@ -32,6 +35,9 @@ ALTER TABLE bank_to_user
     ADD COLUMN new_user_id_varchar VARCHAR(10);
 
 ALTER TABLE nominees_to_user
+    ADD COLUMN new_user_id_varchar VARCHAR(10);
+
+ALTER TABLE user_password_details
     ADD COLUMN new_user_id_varchar VARCHAR(10);
 
 ALTER TABLE user_sessions
@@ -61,6 +67,11 @@ UPDATE nominees_to_user ntu
 SET new_user_id_varchar = u.new_id
 FROM "user" u
 WHERE ntu.user_id = u.id;
+
+UPDATE user_password_details upd
+SET new_user_id_varchar = u.new_id
+FROM "user" u
+WHERE upd.user_id = u.id;
 
 UPDATE user_sessions us
 SET new_user_id_varchar = u.new_id
@@ -110,6 +121,9 @@ ALTER TABLE bank_to_user
 ALTER TABLE nominees_to_user
     DROP COLUMN user_id;
 
+ALTER TABLE user_password_details
+    DROP COLUMN user_id;
+
 ALTER TABLE user_sessions
     DROP COLUMN user_id;
 
@@ -132,6 +146,9 @@ ALTER TABLE bank_to_user
     RENAME COLUMN new_user_id_varchar TO user_id;
 
 ALTER TABLE nominees_to_user
+    RENAME COLUMN new_user_id_varchar TO user_id;
+
+ALTER TABLE user_password_details
     RENAME COLUMN new_user_id_varchar TO user_id;
 
 ALTER TABLE user_sessions
@@ -157,6 +174,9 @@ ALTER TABLE bank_to_user
 
 ALTER TABLE nominees_to_user
     ADD CONSTRAINT FK_Nominees_To_User_User_Id FOREIGN KEY (user_id) REFERENCES "user" (id);
+
+ALTER TABLE user_password_details
+    ADD CONSTRAINT FK_User_Login_Id FOREIGN KEY (user_id) REFERENCES "user" (id);
 
 ALTER TABLE user_sessions
     ADD CONSTRAINT FK_User_Session_User FOREIGN KEY (user_id) REFERENCES "user" (id);
