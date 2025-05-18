@@ -24,3 +24,9 @@ ALTER TABLE nominees
 
 ALTER TABLE nominees
     ALTER COLUMN govt_id DROP DEFAULT;
+
+ALTER TABLE signup_checkpoints
+    DROP CONSTRAINT FK_Checkpoint_User_Payment,
+    DROP COLUMN payment_id;
+
+DROP TABLE razorpay_data;
