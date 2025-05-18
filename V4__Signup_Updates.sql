@@ -9,7 +9,8 @@ ALTER TABLE bank_account
     ALTER COLUMN account_type DROP DEFAULT;
 
 ALTER TABLE signup_checkpoints
-    ALTER COLUMN occupation TYPE occupation USING 'self employed'::occupation;
+    ALTER COLUMN occupation TYPE occupation USING 'self employed'::occupation,
+    ADD COLUMN client_id VARCHAR(10);
 
 ALTER TABLE nominees
     ADD COLUMN govt_id    VARCHAR(12)                         NOT NULL DEFAULT '',
