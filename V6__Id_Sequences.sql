@@ -1,4 +1,4 @@
 CREATE SEQUENCE user_id_seq
-    START WITH 0
+    START WITH 1
     INCREMENT 1
     NO CYCLE;
