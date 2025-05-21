@@ -31,3 +31,7 @@ ALTER TABLE signup_checkpoints
     DROP COLUMN payment_id;
 
 DROP TABLE razorpay_data;
+
+-- fist login column
+ALTER TABLE user_password_details
+    ADD COLUMN is_first_login BOOLEAN NOT NULL DEFAULT TRUE;
