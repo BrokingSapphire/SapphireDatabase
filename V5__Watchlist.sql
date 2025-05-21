@@ -39,7 +39,7 @@ CREATE TABLE user_watchlist_entry
     position_index    INT            NOT NULL,
     created_at        TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at        TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT PK_User_Stock_Watchlist PRIMARY KEY (user_watchlist_id, isin, exchange),
+    CONSTRAINT PK_User_Watchlist_Entry PRIMARY KEY (user_watchlist_id, isin, exchange),
     CONSTRAINT FK_Watchlist_Entry FOREIGN KEY (user_watchlist_id) REFERENCES user_stock_watchlist (id),
     CONSTRAINT UQ_User_Watchlist_Position_Index UNIQUE (user_watchlist_id, position_index)
 );
