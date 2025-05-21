@@ -25,11 +25,9 @@ ALTER TABLE balance_transactions
 ALTER TABLE compliance_processing
     DROP CONSTRAINT FK_Officer_Compliance_Id;
 
-ALTER TABLE user_watchlist_category
-    DROP CONSTRAINT FK_User_To_Watchlist_Category;
-
 ALTER TABLE user_stock_watchlist
-    DROP CONSTRAINT FK_User_To_Watchlist;
+    DROP CONSTRAINT FK_User_To_Watchlist,
+    DROP CONSTRAINT UQ_User_Stock_Watchlist;
 
 ALTER TABLE bank_to_user
     ADD COLUMN new_user_id_varchar VARCHAR(10);
@@ -50,9 +48,6 @@ ALTER TABLE balance_transactions
     ADD COLUMN new_user_id_varchar VARCHAR(10);
 
 ALTER TABLE compliance_processing
-    ADD COLUMN new_user_id_varchar VARCHAR(10);
-
-ALTER TABLE user_watchlist_category
     ADD COLUMN new_user_id_varchar VARCHAR(10);
 
 ALTER TABLE user_stock_watchlist
@@ -93,11 +88,6 @@ SET new_user_id_varchar = u.new_id
 FROM "user" u
 WHERE cp.officer_id = u.id;
 
-UPDATE user_watchlist_category uwc
-SET new_user_id_varchar = u.new_id
-FROM "user" u
-WHERE uwc.user_id = u.id;
-
 UPDATE user_stock_watchlist usw
 SET new_user_id_varchar = u.new_id
 FROM "user" u
@@ -136,9 +126,6 @@ ALTER TABLE balance_transactions
 ALTER TABLE compliance_processing
     DROP COLUMN officer_id;
 
-ALTER TABLE user_watchlist_category
-    DROP COLUMN user_id;
-
 ALTER TABLE user_stock_watchlist
     DROP COLUMN user_id;
 
@@ -162,9 +149,6 @@ ALTER TABLE balance_transactions
 
 ALTER TABLE compliance_processing
     RENAME COLUMN new_user_id_varchar TO officer_id;
-
-ALTER TABLE user_watchlist_category
-    RENAME COLUMN new_user_id_varchar TO user_id;
 
 ALTER TABLE user_stock_watchlist
     RENAME COLUMN new_user_id_varchar TO user_id;
@@ -190,8 +174,6 @@ ALTER TABLE balance_transactions
 ALTER TABLE compliance_processing
     ADD CONSTRAINT FK_Officer_Compliance_Id FOREIGN KEY (officer_id) REFERENCES "user" (id);
 
-ALTER TABLE user_watchlist_category
-    ADD CONSTRAINT FK_User_To_Watchlist_Category FOREIGN KEY (user_id) REFERENCES "user" (id);
-
 ALTER TABLE user_stock_watchlist
-    ADD CONSTRAINT FK_User_To_Watchlist FOREIGN KEY (user_id) REFERENCES "user" (id);
+    ADD CONSTRAINT FK_User_To_Watchlist FOREIGN KEY (user_id) REFERENCES "user" (id),
+    ADD CONSTRAINT UQ_User_Stock_Watchlist UNIQUE (user_id, watchlist_id, category_id);
