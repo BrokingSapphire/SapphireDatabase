@@ -25,9 +25,10 @@ ALTER TABLE balance_transactions
 ALTER TABLE compliance_processing
     DROP CONSTRAINT FK_Officer_Compliance_Id;
 
-ALTER TABLE user_stock_watchlist
-    DROP CONSTRAINT FK_User_To_Watchlist,
-    DROP CONSTRAINT UQ_User_Stock_Watchlist;
+ALTER TABLE user_watchlist
+    DROP CONSTRAINT FK_User_Watchlist_User,
+    DROP CONSTRAINT UQ_User_Watchlist,
+    DROP CONSTRAINT UQ_User_Watchlist_Position;
 
 ALTER TABLE bank_to_user
     ADD COLUMN new_user_id_varchar VARCHAR(10);
@@ -50,7 +51,7 @@ ALTER TABLE balance_transactions
 ALTER TABLE compliance_processing
     ADD COLUMN new_user_id_varchar VARCHAR(10);
 
-ALTER TABLE user_stock_watchlist
+ALTER TABLE user_watchlist
     ADD COLUMN new_user_id_varchar VARCHAR(10);
 
 UPDATE bank_to_user btu
@@ -88,7 +89,7 @@ SET new_user_id_varchar = u.new_id
 FROM "user" u
 WHERE cp.officer_id = u.id;
 
-UPDATE user_stock_watchlist usw
+UPDATE user_watchlist usw
 SET new_user_id_varchar = u.new_id
 FROM "user" u
 WHERE usw.user_id = u.id;
@@ -126,7 +127,7 @@ ALTER TABLE balance_transactions
 ALTER TABLE compliance_processing
     DROP COLUMN officer_id;
 
-ALTER TABLE user_stock_watchlist
+ALTER TABLE user_watchlist
     DROP COLUMN user_id;
 
 ALTER TABLE bank_to_user
@@ -150,7 +151,7 @@ ALTER TABLE balance_transactions
 ALTER TABLE compliance_processing
     RENAME COLUMN new_user_id_varchar TO officer_id;
 
-ALTER TABLE user_stock_watchlist
+ALTER TABLE user_watchlist
     RENAME COLUMN new_user_id_varchar TO user_id;
 
 ALTER TABLE bank_to_user
@@ -174,6 +175,7 @@ ALTER TABLE balance_transactions
 ALTER TABLE compliance_processing
     ADD CONSTRAINT FK_Officer_Compliance_Id FOREIGN KEY (officer_id) REFERENCES "user" (id);
 
-ALTER TABLE user_stock_watchlist
-    ADD CONSTRAINT FK_User_To_Watchlist FOREIGN KEY (user_id) REFERENCES "user" (id),
-    ADD CONSTRAINT UQ_User_Stock_Watchlist UNIQUE (user_id, watchlist_id, category_id);
+ALTER TABLE user_watchlist
+    ADD CONSTRAINT FK_User_Watchlist_User FOREIGN KEY (user_id) REFERENCES "user" (id),
+    ADD CONSTRAINT UQ_User_Watchlist UNIQUE (user_id, watchlist_id),
+    ADD CONSTRAINT UQ_User_Watchlist_Position UNIQUE (user_id, position_index);
