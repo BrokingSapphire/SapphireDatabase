@@ -42,7 +42,7 @@ CREATE TABLE watchlist_category_map
     CONSTRAINT PK_Watchlist_Category_Map PRIMARY KEY (id),
     CONSTRAINT FK_Watchlist_Category_Map_User_Watchlist FOREIGN KEY (user_watchlist_id) REFERENCES user_watchlist (id),
     CONSTRAINT FK_Watchlist_Category_Map_Category FOREIGN KEY (category_id) REFERENCES watchlist_category (id),
-    CONSTRAINT UQ_Watchlist_Category UNIQUE (user_watchlist_id, category_id),
+    CONSTRAINT UQ_Watchlist_Category_Map UNIQUE (user_watchlist_id, category_id),
     CONSTRAINT UQ_Watchlist_Category_Position UNIQUE (user_watchlist_id, position_index)
 );
 
