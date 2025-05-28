@@ -30,6 +30,9 @@ ALTER TABLE signup_checkpoints
     DROP CONSTRAINT FK_Checkpoint_User_Payment,
     DROP COLUMN payment_id;
 
+ALTER TABLE address
+    ALTER COLUMN address1 DROP NOT NULL;
+
 DROP TABLE razorpay_data;
 
 -- fist login column
