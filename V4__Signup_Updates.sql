@@ -33,7 +33,7 @@ ALTER TABLE signup_checkpoints
 ALTER TABLE address
     ALTER COLUMN address1 DROP NOT NULL;
 
-ALTER TABLE aadhaar
+ALTER TABLE aadhaar_detail
     ALTER COLUMN co DROP NOT NULL,
     ALTER COLUMN post_office DROP NOT NULL;
 
