@@ -55,8 +55,7 @@ CREATE TABLE signup_verification_status
         ) STORED,
     created_at                 TIMESTAMP                      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at                 TIMESTAMP                      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT PK_Signup_Verification_Status_Id PRIMARY KEY (id),
-    CONSTRAINT FK_Signup_Checkpoint_Verification FOREIGN KEY (id) REFERENCES signup_checkpoints (id)
+    CONSTRAINT PK_Signup_Verification_Status_Id PRIMARY KEY (id)
 );
 
 CREATE TABLE compliance_processing (
