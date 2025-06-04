@@ -42,3 +42,8 @@ DROP TABLE razorpay_data;
 -- fist login column
 ALTER TABLE user_password_details
     ADD COLUMN is_first_login BOOLEAN NOT NULL DEFAULT TRUE;
+
+ALTER TABLE signup_checkpoints 
+ADD COLUMN doubt BOOLEAN DEFAULT FALSE,
+ADD COLUMN user_provided_name INTEGER REFERENCES user_name(id),
+ADD COLUMN user_provided_dob DATE;
