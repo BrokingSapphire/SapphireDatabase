@@ -1,3 +1,5 @@
+DROP SEQUENCE user_id_seq;
+
 CREATE TABLE id_counter (
     id_type VARCHAR(10) PRIMARY KEY,
     current_id VARCHAR(6) NOT NULL,
