@@ -126,7 +126,7 @@ ALTER TABLE "user"
     RENAME COLUMN new_id TO id;
 
 ALTER TABLE "user"
-    ADD PRIMARY KEY (id);
+    ADD CONSTRAINT PK_User_Id PRIMARY KEY (id);
 
 ALTER TABLE bank_to_user
     DROP COLUMN user_id;
