@@ -329,7 +329,7 @@ ALTER TABLE compliance_processing
 ALTER TABLE user_watchlist
     ADD CONSTRAINT FK_User_Watchlist_User FOREIGN KEY (user_id) REFERENCES "user" (id),
     ADD CONSTRAINT UQ_User_Watchlist UNIQUE (user_id, watchlist_id),
-    ADD CONSTRAINT UQ_User_Watchlist_Position UNIQUE (user_id, position_index);
+    ADD CONSTRAINT UQ_User_Watchlist_Position UNIQUE (user_id, position_index) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE investment_segments_to_user
     ADD CONSTRAINT PK_User_Segment PRIMARY KEY (user_id, segment),
