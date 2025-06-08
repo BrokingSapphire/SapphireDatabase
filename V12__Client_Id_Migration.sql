@@ -217,9 +217,6 @@ ALTER TABLE account_deletions
 ALTER TABLE user_preferences
     ALTER COLUMN new_user_id SET NOT NULL;
 
-ALTER TABLE signup_checkpoints
-    ALTER COLUMN new_client_id SET NOT NULL;
-
 
 ALTER TABLE "user"
     DROP CONSTRAINT PK_User_Id;
