@@ -111,6 +111,9 @@ ALTER TABLE account_deletions
 ALTER TABLE user_preferences
     ADD COLUMN new_user_id CHAR(6);
 
+ALTER TABLE signup_checkpoints
+    ADD COLUMN new_client_id CHAR(6);
+
 
 UPDATE bank_to_user btu
 SET new_user_id = u.new_id
@@ -172,6 +175,11 @@ SET new_user_id = u.new_id
 FROM "user" u
 WHERE up.user_id = u.id;
 
+UPDATE signup_checkpoints sc
+SET new_client_id = u.new_id
+FROM "user" u
+WHERE sc.new_client_id = u.id;
+
 
 ALTER TABLE bank_to_user
     ALTER COLUMN new_user_id SET NOT NULL;
@@ -208,6 +216,9 @@ ALTER TABLE account_deletions
 
 ALTER TABLE user_preferences
     ALTER COLUMN new_user_id SET NOT NULL;
+
+ALTER TABLE signup_checkpoints
+    ALTER COLUMN new_client_id SET NOT NULL;
 
 
 ALTER TABLE "user"
@@ -284,6 +295,11 @@ ALTER TABLE user_preferences
     DROP COLUMN user_id;
 ALTER TABLE user_preferences
     RENAME COLUMN new_user_id TO user_id;
+
+ALTER TABLE signup_checkpoints
+    DROP COLUMN client_id;
+ALTER TABLE signup_checkpoints
+    RENAME COLUMN new_client_id TO client_id;
 
 
 ALTER TABLE bank_to_user
