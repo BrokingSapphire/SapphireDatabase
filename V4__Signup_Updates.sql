@@ -4,7 +4,9 @@ CREATE TYPE nominee_relation AS ENUM ('Father', 'Mother', 'Son', 'Daughter', 'Si
 CREATE TYPE nationality AS ENUM ('INDIAN', 'OTHER');
 CREATE TYPE residential_status AS ENUM ('Resident Individual', 'NRI', 'Foreign Nation', 'Person of Indian Origin');
 CREATE TYPE address_type AS ENUM ('Residential', 'Business', 'Unspecified');
-
+CREATE TYPE yes_no AS ENUM ('YES', 'NO');
+CREATE TYPE country_enum AS ENUM ('INDIA', 'OTHER');
+CREATE TYPE user_account_type AS ENUM ('Individual', 'Non-Individual');
 
 ALTER TABLE bank_account
     ADD COLUMN account_type account_type DEFAULT 'savings';
@@ -143,5 +145,23 @@ ALTER TABLE signup_checkpoints
 ADD COLUMN correspondence_address_id INT,
 ADD CONSTRAINT FK_Checkpoint_Correspondence_Address FOREIGN KEY (correspondence_address_id) REFERENCES correspondence_address (id);
 
-ALTER TABLE address 
-DROP CONSTRAINT UQ_Address;
+ALTER TABLE "user" 
+ADD COLUMN office_tel_num VARCHAR(15),      
+ADD COLUMN residence_tel_num VARCHAR(15);
+
+ALTER TABLE signup_checkpoints 
+ADD COLUMN office_tel_num VARCHAR(15),     
+ADD COLUMN residence_tel_num VARCHAR(15);   
+
+ALTER TABLE "user"
+ADD COLUMN is_us_person yes_no NOT NULL DEFAULT 'NO',
+ADD COLUMN country_of_residence country_enum NOT NULL DEFAULT 'INDIA',
+ADD COLUMN country_of_citizenship country_enum NOT NULL DEFAULT 'INDIA',
+ADD COLUMN user_account_type user_account_type NOT NULL DEFAULT 'Individual';
+
+ALTER TABLE "user"
+    ALTER COLUMN is_us_person DROP DEFAULT,
+    ALTER COLUMN country_of_residence DROP DEFAULT,
+    ALTER COLUMN country_of_citizenship DROP DEFAULT,
+    ALTER COLUMN user_account_type DROP DEFAULT;
+
