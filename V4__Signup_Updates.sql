@@ -1,6 +1,9 @@
 CREATE TYPE occupation AS ENUM ('student', 'govt servant', 'retired', 'private sector', 'agriculturalist', 'self employed', 'housewife', 'other');
 CREATE TYPE account_type AS ENUM ('savings', 'current');
 CREATE TYPE nominee_relation AS ENUM ('Father', 'Mother', 'Son', 'Daughter', 'Sister', 'Brother', 'Spouse', 'Other');
+CREATE TYPE nationality AS ENUM ('INDIAN', 'OTHER');
+CREATE TYPE residential_status AS ENUM ('Resident Individual', 'NRI', 'Foreign Nation', 'Person of Indian Origin');
+
 
 ALTER TABLE bank_account
     ADD COLUMN account_type account_type DEFAULT 'savings';
@@ -76,3 +79,26 @@ DROP CONSTRAINT FK_Checkpoint_User_Father_Name;
 
 ALTER TABLE signup_checkpoints 
 ADD CONSTRAINT FK_Checkpoint_User_Father_Spouse_Name FOREIGN KEY (father_spouse_name) REFERENCES user_name (id);
+
+ALTER TABLE "user" 
+ADD COLUMN nationality nationality NOT NULL DEFAULT 'INDIAN',
+ADD COLUMN other_nationality VARCHAR(50),
+ADD COLUMN residential_status residential_status NOT NULL DEFAULT 'Resident Individual';
+
+ALTER TABLE address 
+RENAME COLUMN address1 TO line_1;
+
+ALTER TABLE address 
+RENAME COLUMN address2 TO line_2;
+
+ALTER TABLE address 
+RENAME COLUMN street_name TO line_3;
+
+
+ALTER TABLE "user" 
+ADD CONSTRAINT CHK_User_Other_Nationality 
+CHECK (
+    (nationality = 'OTHER' AND other_nationality IS NOT NULL AND TRIM(other_nationality) != '') 
+    OR 
+    (nationality = 'INDIAN' AND other_nationality IS NULL)
+);
