@@ -1,5 +1,3 @@
-CREATE TYPE country_enum AS ENUM ('INDIA', 'OTHER');
-CREATE TYPE user_account_type AS ENUM ('Individual', 'Non-Individual');
 CREATE TYPE contract_note_type AS ENUM ('Electronic', 'Physical');
 CREATE TYPE annual_report_type AS ENUM ('Electronic', 'Physical', 'Both');
 CREATE TYPE dp_settlement AS ENUM ('Monthly', 'Fortnightly', 'Weekly', 'As per SEBI regulations');
