@@ -3,6 +3,7 @@ CREATE TYPE account_type AS ENUM ('savings', 'current');
 CREATE TYPE nominee_relation AS ENUM ('Father', 'Mother', 'Son', 'Daughter', 'Sister', 'Brother', 'Spouse', 'Other');
 CREATE TYPE nationality AS ENUM ('INDIAN', 'OTHER');
 CREATE TYPE residential_status AS ENUM ('Resident Individual', 'NRI', 'Foreign Nation', 'Person of Indian Origin');
+CREATE TYPE address_type AS ENUM ('Residential', 'Business', 'Unspecified');
 
 
 ALTER TABLE bank_account
@@ -32,9 +33,6 @@ ALTER TABLE nominees
 ALTER TABLE signup_checkpoints
     DROP CONSTRAINT FK_Checkpoint_User_Payment,
     DROP COLUMN payment_id;
-
-ALTER TABLE address
-    ALTER COLUMN address1 DROP NOT NULL;
 
 ALTER TABLE aadhaar_detail
     ALTER COLUMN co DROP NOT NULL,
@@ -94,6 +92,14 @@ RENAME COLUMN address2 TO line_2;
 ALTER TABLE address 
 RENAME COLUMN street_name TO line_3;
 
+ALTER TABLE address
+    ALTER COLUMN line_1 DROP NOT NULL;
+
+ALTER TABLE address
+    ADD COLUMN address_type address_type NOT NULL DEFAULT 'Residential';
+
+ALTER TABLE address
+    ALTER COLUMN address_type DROP DEFAULT;
 
 ALTER TABLE "user" 
 ADD CONSTRAINT CHK_User_Other_Nationality 
@@ -102,3 +108,40 @@ CHECK (
     OR 
     (nationality = 'INDIAN' AND other_nationality IS NULL)
 );
+
+ALTER TABLE "user" 
+RENAME COLUMN address_id TO permanent_address_id;
+
+ALTER TABLE signup_checkpoints 
+RENAME COLUMN address_id TO permanent_address_id;
+
+CREATE TABLE correspondence_address (
+    id SERIAL,
+    line_1 TEXT,
+    line_2 TEXT,
+    line_3 TEXT,
+    country_id VARCHAR(3) NOT NULL,
+    state_id INT NOT NULL,
+    city_id INT NOT NULL,
+    postal_id INT NOT NULL,
+    address_type address_type NOT NULL DEFAULT 'Residential',
+    CONSTRAINT PK_Correspondence_Address_Id PRIMARY KEY (id),
+    CONSTRAINT FK_Correspondence_Address_Country FOREIGN KEY (country_id) REFERENCES country (iso),
+    CONSTRAINT FK_Correspondence_Address_State FOREIGN KEY (state_id) REFERENCES state (id),
+    CONSTRAINT FK_Correspondence_Address_City FOREIGN KEY (city_id) REFERENCES city (id),
+    CONSTRAINT FK_Correspondence_Address_Postal FOREIGN KEY (postal_id) REFERENCES postal_code (id)
+);
+
+ALTER TABLE correspondence_address
+    ALTER COLUMN address_type DROP DEFAULT;
+
+ALTER TABLE "user" 
+ADD COLUMN correspondence_address_id INT,
+ADD CONSTRAINT FK_User_Correspondence_Address FOREIGN KEY (correspondence_address_id) REFERENCES correspondence_address (id);
+
+ALTER TABLE signup_checkpoints 
+ADD COLUMN correspondence_address_id INT,
+ADD CONSTRAINT FK_Checkpoint_Correspondence_Address FOREIGN KEY (correspondence_address_id) REFERENCES correspondence_address (id);
+
+ALTER TABLE address 
+DROP CONSTRAINT UQ_Address;
