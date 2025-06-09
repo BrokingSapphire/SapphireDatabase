@@ -3,6 +3,7 @@ CREATE TYPE annual_report_type AS ENUM ('Electronic', 'Physical', 'Both');
 CREATE TYPE dp_settlement AS ENUM ('Monthly', 'Fortnightly', 'Weekly', 'As per SEBI regulations');
 CREATE TYPE declaration_relation AS ENUM ('Self', 'Spouse', 'Child', 'Parent');
 CREATE TYPE email_declaration AS ENUM ('Self', 'Spouse', 'Child', 'Parent', 'Do not have');
+CREATE TYPE client_category_commercial_non_commercial AS ENUM ('Value Chain Participation', 'Exporter', 'Importer', 'Hedger' , 'Financial Participation', 'Trader' , 'Arbitrager' , 'Other');
 
 
 ALTER TABLE "user"
@@ -30,3 +31,12 @@ ALTER TABLE "user"
     ALTER COLUMN internet_trading_facility DROP DEFAULT,
     ALTER COLUMN margin_trading_facility DROP DEFAULT,
     ALTER COLUMN bsda_facility DROP DEFAULT;
+
+
+ALTER TABLER "user"
+ADD COLUMN client_category_commercial_non_commercial client_category_commercial_non_commercial NOT NULL DEFAULT 'Other';
+ADD COLUMN past_actions NOT NULL DEFAULT 'NO';
+
+ALTER TABLE "user"
+    ALTER COLUMN client_category_commercial_non_commercial DROP DEFAULT;
+    ALTER COLUMN past_actions DROP DEFAULT;
