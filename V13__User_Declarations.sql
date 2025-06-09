@@ -33,10 +33,29 @@ ALTER TABLE "user"
     ALTER COLUMN bsda_facility DROP DEFAULT;
 
 
-ALTER TABLER "user"
-ADD COLUMN client_category_commercial_non_commercial client_category_commercial_non_commercial NOT NULL DEFAULT 'Other';
-ADD COLUMN past_actions NOT NULL DEFAULT 'NO';
+ALTER TABLE "user"
+ADD COLUMN client_category_commercial_non_commercial client_category_commercial_non_commercial NOT NULL DEFAULT 'Other',
+ADD COLUMN past_actions yes_no NOT NULL DEFAULT 'NO';
 
 ALTER TABLE "user"
-    ALTER COLUMN client_category_commercial_non_commercial DROP DEFAULT;
+    ALTER COLUMN client_category_commercial_non_commercial DROP DEFAULT,
     ALTER COLUMN past_actions DROP DEFAULT;
+
+CREATE TABLE gst_registration (
+    id SERIAL,
+    register_no VARCHAR(15) NOT NULL,
+    validity_date DATE NOT NULL,
+    state_name VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_GST_Registration_Id PRIMARY KEY (id),
+    CONSTRAINT UQ_GST_Register_No UNIQUE (register_no),
+    CONSTRAINT CHK_GST_Register_No_Format CHECK (register_no ~ '^[0-9]{2}[A-Z0-9]{13}$'),
+    CONSTRAINT CHK_Validity_Date CHECK (validity_date > CURRENT_DATE)
+);
+
+ALTER TABLE "user"
+ADD COLUMN gst_registration_id INT,
+ADD CONSTRAINT FK_User_GST_Registration FOREIGN KEY (gst_registration_id) REFERENCES gst_registration (id);
+
+
