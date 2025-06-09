@@ -4,7 +4,7 @@ CREATE TYPE dp_settlement AS ENUM ('Monthly', 'Fortnightly', 'Weekly', 'As per S
 CREATE TYPE declaration_relation AS ENUM ('Self', 'Spouse', 'Child', 'Parent');
 CREATE TYPE email_declaration AS ENUM ('Self', 'Spouse', 'Child', 'Parent', 'Do not have');
 CREATE TYPE client_category_commercial_non_commercial AS ENUM ('Value Chain Participation', 'Exporter', 'Importer', 'Hedger' , 'Financial Participation', 'Trader' , 'Arbitrager' , 'Other');
-
+CREATE TYPE business_categorization AS ENUM ('B2B', 'D2C');
 
 ALTER TABLE "user"
 ADD COLUMN contract_note_type contract_note_type NOT NULL DEFAULT 'Electronic',
@@ -43,9 +43,9 @@ ALTER TABLE "user"
 
 CREATE TABLE gst_registration (
     id SERIAL,
-    register_no VARCHAR(15) NOT NULL,
-    validity_date DATE NOT NULL,
-    state_name VARCHAR(50) NOT NULL,
+    register_no VARCHAR(15),  
+    validity_date DATE,          
+    state_name VARCHAR(50),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_GST_Registration_Id PRIMARY KEY (id),
@@ -58,4 +58,8 @@ ALTER TABLE "user"
 ADD COLUMN gst_registration_id INT,
 ADD CONSTRAINT FK_User_GST_Registration FOREIGN KEY (gst_registration_id) REFERENCES gst_registration (id);
 
+ALTER TABLE "user"
+ADD COLUMN business_categorization business_categorization NOT NULL DEFAULT 'D2C';
 
+ALTER TABLE "user"
+    ALTER COLUMN business_categorization DROP DEFAULT;
