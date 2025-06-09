@@ -47,3 +47,32 @@ ALTER TABLE signup_checkpoints
 ADD COLUMN doubt BOOLEAN DEFAULT FALSE,
 ADD COLUMN user_provided_name INTEGER REFERENCES user_name(id),
 ADD COLUMN user_provided_dob DATE;
+
+
+ALTER TABLE "user"
+ADD COLUMN maiden_name INT,
+ADD CONSTRAINT FK_User_Maiden_Name FOREIGN KEY (maiden_name) REFERENCES user_name (id);
+
+ALTER TABLE signup_checkpoints 
+ADD COLUMN maiden_name INT,
+ADD CONSTRAINT FK_Checkpoint_User_Maiden_Name FOREIGN KEY (maiden_name) REFERENCES user_name (id);
+
+-- updating user father name to user/spouse name
+
+ALTER TABLE "user" 
+RENAME COLUMN father_name TO father_spouse_name;
+
+ALTER TABLE "user" 
+DROP CONSTRAINT FK_User_Father_Name;
+
+ALTER TABLE "user" 
+ADD CONSTRAINT FK_User_Father_Spouse_Name FOREIGN KEY (father_spouse_name) REFERENCES user_name (id);
+
+ALTER TABLE signup_checkpoints 
+RENAME COLUMN father_name TO father_spouse_name;
+
+ALTER TABLE signup_checkpoints 
+DROP CONSTRAINT FK_Checkpoint_User_Father_Name;
+
+ALTER TABLE signup_checkpoints 
+ADD CONSTRAINT FK_Checkpoint_User_Father_Spouse_Name FOREIGN KEY (father_spouse_name) REFERENCES user_name (id);
