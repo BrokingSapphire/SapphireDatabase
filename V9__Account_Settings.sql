@@ -19,7 +19,6 @@ CREATE TABLE user_preferences
     theme                      theme       NOT NULL DEFAULT 'light',
     biometric_authentication   BOOLEAN     NOT NULL DEFAULT FALSE,
     biometric_permission       BOOLEAN     NOT NULL DEFAULT FALSE,
-    two_factor_authentication  BOOLEAN     NOT NULL DEFAULT FALSE,
     internet_permission        BOOLEAN     NOT NULL DEFAULT FALSE,
     storage_permission         BOOLEAN     NOT NULL DEFAULT FALSE,
     location_permission        BOOLEAN     NOT NULL DEFAULT FALSE,
