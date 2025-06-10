@@ -15,7 +15,3 @@ CREATE TABLE user_mpin (
     CONSTRAINT FK_User_MPIN_Client FOREIGN KEY (client_id) REFERENCES "user"(id),
     CONSTRAINT FK_User_MPIN_Hash_Algo FOREIGN KEY (hash_algo_id) REFERENCES hashing_algorithm(id)
 );
-
-
-ALTER TABLE signup_verification_status 
-ADD COLUMN mpin_status compliance_verification_status NOT NULL DEFAULT 'processing';
