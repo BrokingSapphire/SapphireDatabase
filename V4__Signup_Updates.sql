@@ -82,7 +82,7 @@ ALTER TABLE signup_checkpoints
 
 ALTER TABLE "user"
     ADD COLUMN nationality        nationality        NOT NULL DEFAULT 'INDIAN',
-    ADD COLUMN other_nationality  INT,
+    ADD COLUMN other_nationality  VARCHAR(3),
     ADD COLUMN residential_status residential_status NOT NULL DEFAULT 'Resident Individual';
 
 ALTER TABLE "user"
