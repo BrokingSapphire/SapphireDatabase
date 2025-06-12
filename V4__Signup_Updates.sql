@@ -168,3 +168,6 @@ ADD COLUMN pan_document_mime_type VARCHAR(100),
 ADD COLUMN pan_document_completed_at TIMESTAMP,
 ADD COLUMN pan_document_file_size INTEGER,
 ADD COLUMN pan_document_issuer VARCHAR(255);
+
+ALTER TABLE user_password_details 
+DROP COLUMN is_first_login;
