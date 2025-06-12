@@ -148,26 +148,8 @@ ALTER TABLE "user"
     ALTER COLUMN country_of_citizenship DROP DEFAULT,
     ALTER COLUMN user_account_type DROP DEFAULT;
 
-ALTER TABLE signup_checkpoints 
-ADD COLUMN pan_document_s3_key VARCHAR(512),
-ADD COLUMN pan_document_s3_url VARCHAR(1024),
-ADD COLUMN pan_document_filename VARCHAR(255),
-ADD COLUMN pan_document_mime_type VARCHAR(100),
-ADD COLUMN pan_document_completed_at TIMESTAMP,
-ADD COLUMN pan_document_file_size INTEGER,
-ADD COLUMN pan_document_issuer VARCHAR(255);
+ALTER TABLE signup_verification_status
+    ADD COLUMN pan_document_status compliance_verification_status DEFAULT 'pending';
 
-ALTER TABLE signup_verification_status 
-ADD COLUMN pan_document_status compliance_verification_status DEFAULT 'pending';
-
-ALTER TABLE "user" 
-ADD COLUMN pan_document_s3_key VARCHAR(512),
-ADD COLUMN pan_document_s3_url VARCHAR(1024),
-ADD COLUMN pan_document_filename VARCHAR(255),
-ADD COLUMN pan_document_mime_type VARCHAR(100),
-ADD COLUMN pan_document_completed_at TIMESTAMP,
-ADD COLUMN pan_document_file_size INTEGER,
-ADD COLUMN pan_document_issuer VARCHAR(255);
-
-ALTER TABLE user_password_details 
-DROP COLUMN is_first_login;
+ALTER TABLE user_password_details
+    DROP COLUMN is_first_login;
