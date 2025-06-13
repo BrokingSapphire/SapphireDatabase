@@ -1,7 +1,6 @@
 CREATE TYPE depository AS ENUM ('CDSL', 'NSDL');
 CREATE TYPE demat_status AS ENUM ('active', 'frozen', 'suspended', 'under_review', 'processing');
 CREATE TYPE demat_action AS ENUM ('freeze', 'unfreeze');
-CREATE TYPE funds_settlement_frequency AS ENUM ('30_days', '90_days', 'bill_to_bill');
 
 -- Create demat account table
 CREATE TABLE demat_account

@@ -1,5 +1,6 @@
 CREATE TYPE theme AS ENUM ('light', 'dark');
 CREATE TYPE chart_provider AS ENUM ('TradingView', 'ChartIQ');
+CREATE TYPE funds_settlement_frequency AS ENUM ('30_days', '90_days', 'bill_to_bill');
 
 CREATE TABLE account_deletions
 (
