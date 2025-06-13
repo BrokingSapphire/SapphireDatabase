@@ -5,7 +5,7 @@ CREATE TYPE funds_settlement_frequency AS ENUM ('30_days', '90_days', 'bill_to_b
 CREATE TABLE account_deletions
 (
     id              SERIAL,
-    user_id         VARCHAR(10) NOT NULL,
+    user_id         CHAR(6) NOT NULL,
     email           VARCHAR(100) NOT NULL,
     deletion_reason TEXT,
     deleted_at      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -16,7 +16,7 @@ CREATE TABLE account_deletions
 CREATE TABLE user_preferences
 (
     id                         SERIAL,
-    user_id                    VARCHAR(10) NOT NULL,
+    user_id                    CHAR(6) NOT NULL,
     theme                      theme       NOT NULL DEFAULT 'light',
     biometric_authentication   BOOLEAN     NOT NULL DEFAULT FALSE,
     biometric_permission       BOOLEAN     NOT NULL DEFAULT FALSE,
