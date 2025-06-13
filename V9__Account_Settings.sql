@@ -56,3 +56,8 @@ CREATE TABLE user_settlement_frequency
     CONSTRAINT FK_User_Settlement_Frequency_User FOREIGN KEY (user_id) REFERENCES "user" (id),
     CONSTRAINT UQ_User_Settlement_Frequency_User UNIQUE (user_id)
 );
+
+ALTER TABLE account_deletions
+ALTER COLUMN deletion_reason TYPE TEXT[] USING ARRAY[deletion_reason],
+ALTER COLUMN deletion_reason SET NOT NULL,
+ALTER COLUMN deletion_reason SET DEFAULT '{}';
