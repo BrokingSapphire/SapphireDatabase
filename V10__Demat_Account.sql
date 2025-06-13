@@ -1,4 +1,7 @@
 CREATE TYPE depository AS ENUM ('CDSL', 'NSDL');
+CREATE TYPE demat_status AS ENUM ('active', 'frozen', 'suspended', 'under_review', 'processing');
+CREATE TYPE demat_action AS ENUM ('freeze', 'unfreeze');
+CREATE TYPE funds_settlement_frequency AS ENUM ('30_days', '90_days', 'bill_to_bill');
 
 -- Create demat account table
 CREATE TABLE demat_account
@@ -80,3 +83,48 @@ ADD COLUMN overall_status compliance_verification_status NOT NULL GENERATED ALWA
         END
     ) STORED;
 
+CREATE TABLE user_demat_status
+(
+    id           SERIAL,
+    user_id      CHAR(6)       NOT NULL,
+    demat_status demat_status  NOT NULL DEFAULT 'active',
+    freeze_until TIMESTAMP     NULL,
+    created_at   TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_User_Demat_Status_Id PRIMARY KEY (id),
+    CONSTRAINT FK_User_Demat_Status_User FOREIGN KEY (user_id) REFERENCES "user" (id),
+    CONSTRAINT UQ_User_Demat_Status_User UNIQUE (user_id)
+);
+
+CREATE TABLE demat_freeze_log
+(
+    id               SERIAL,
+    user_id          CHAR(6)       NOT NULL,
+    previous_status  demat_status  NOT NULL,
+    new_status       demat_status  NOT NULL,
+    action           demat_action  NOT NULL,
+    reason           TEXT          NULL,
+    freeze_until     TIMESTAMP     NULL,
+    created_at       TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_Demat_Freeze_Log_Id PRIMARY KEY (id),
+    CONSTRAINT FK_Demat_Freeze_Log_User FOREIGN KEY (user_id) REFERENCES "user" (id)
+);
+
+CREATE TABLE user_settlement_frequency
+(
+    id                    SERIAL,
+    user_id               CHAR(6)                     NOT NULL,
+    settlement_frequency  funds_settlement_frequency  NOT NULL,
+    created_at            TIMESTAMP                   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            TIMESTAMP                   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_User_Settlement_Frequency_Id PRIMARY KEY (id),
+    CONSTRAINT FK_User_Settlement_Frequency_User FOREIGN KEY (user_id) REFERENCES "user" (id),
+    CONSTRAINT UQ_User_Settlement_Frequency_User UNIQUE (user_id)
+);
+
+ALTER TABLE demat_freeze_log
+    ADD CONSTRAINT CHK_Freeze_Action_Status 
+    CHECK (
+        (action = 'freeze' AND new_status IN ('frozen', 'suspended', 'under_review')) OR
+        (action = 'unfreeze' AND new_status = 'active')
+    );
