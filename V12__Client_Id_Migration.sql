@@ -73,7 +73,16 @@ ALTER TABLE account_deletions
 ALTER TABLE user_preferences
     DROP CONSTRAINT FK_User_Preferences_User,
     DROP CONSTRAINT UQ_User_Preferences_User;
+ALTER TABLE user_settlement_frequency
+    DROP CONSTRAINT FK_User_Settlement_Frequency_User,
+    DROP CONSTRAINT UQ_User_Settlement_Frequency_User;
 
+ALTER TABLE user_demat_status
+    DROP CONSTRAINT FK_User_Demat_Status_User,
+    DROP CONSTRAINT UQ_User_Demat_Status_User;
+
+ALTER TABLE demat_freeze_log
+    DROP CONSTRAINT FK_Demat_Freeze_Log_User;
 
 ALTER TABLE bank_to_user
     ADD COLUMN new_user_id CHAR(6);
@@ -114,6 +123,14 @@ ALTER TABLE user_preferences
 ALTER TABLE signup_checkpoints
     ADD COLUMN new_client_id CHAR(6);
 
+ALTER TABLE user_settlement_frequency
+    ADD COLUMN new_user_id CHAR(6);
+
+ALTER TABLE user_demat_status
+    ADD COLUMN new_user_id CHAR(6);
+
+ALTER TABLE demat_freeze_log
+    ADD COLUMN new_user_id CHAR(6);
 
 UPDATE bank_to_user btu
 SET new_user_id = u.new_id
@@ -178,7 +195,22 @@ WHERE up.user_id = u.id;
 UPDATE signup_checkpoints sc
 SET new_client_id = u.new_id
 FROM "user" u
-WHERE sc.new_client_id = u.id;
+WHERE sc.client_id = u.id;
+
+UPDATE user_settlement_frequency usf
+SET new_user_id = u.new_id
+FROM "user" u
+WHERE usf.user_id = u.id;
+
+UPDATE user_demat_status uds
+SET new_user_id = u.new_id
+FROM "user" u
+WHERE uds.user_id = u.id;
+
+UPDATE demat_freeze_log dfl
+SET new_user_id = u.new_id
+FROM "user" u
+WHERE dfl.user_id = u.id;
 
 
 ALTER TABLE bank_to_user
@@ -217,6 +249,15 @@ ALTER TABLE account_deletions
 ALTER TABLE user_preferences
     ALTER COLUMN new_user_id SET NOT NULL;
 
+
+ALTER TABLE user_settlement_frequency
+    ALTER COLUMN new_user_id SET NOT NULL;
+
+ALTER TABLE user_demat_status
+    ALTER COLUMN new_user_id SET NOT NULL;
+
+ALTER TABLE demat_freeze_log
+    ALTER COLUMN new_user_id SET NOT NULL;
 
 ALTER TABLE "user"
     DROP CONSTRAINT PK_User_Id;
@@ -298,6 +339,21 @@ ALTER TABLE signup_checkpoints
 ALTER TABLE signup_checkpoints
     RENAME COLUMN new_client_id TO client_id;
 
+ALTER TABLE user_settlement_frequency
+    DROP COLUMN user_id;
+ALTER TABLE user_settlement_frequency
+    RENAME COLUMN new_user_id TO user_id;
+
+ALTER TABLE user_demat_status
+    DROP COLUMN user_id;
+ALTER TABLE user_demat_status
+    RENAME COLUMN new_user_id TO user_id;
+
+ALTER TABLE demat_freeze_log
+    DROP COLUMN user_id;
+ALTER TABLE demat_freeze_log
+    RENAME COLUMN new_user_id TO user_id;
+
 
 ALTER TABLE bank_to_user
     ADD CONSTRAINT PK_Bank_User PRIMARY KEY (user_id, bank_account_id),
@@ -341,3 +397,14 @@ ALTER TABLE account_deletions
 ALTER TABLE user_preferences
     ADD CONSTRAINT FK_User_Preferences_User FOREIGN KEY (user_id) REFERENCES "user" (id),
     ADD CONSTRAINT UQ_User_Preferences_User UNIQUE (user_id);
+
+ALTER TABLE user_settlement_frequency
+    ADD CONSTRAINT FK_User_Settlement_Frequency_User FOREIGN KEY (user_id) REFERENCES "user" (id),
+    ADD CONSTRAINT UQ_User_Settlement_Frequency_User UNIQUE (user_id);
+
+ALTER TABLE user_demat_status
+    ADD CONSTRAINT FK_User_Demat_Status_User FOREIGN KEY (user_id) REFERENCES "user" (id),
+    ADD CONSTRAINT UQ_User_Demat_Status_User UNIQUE (user_id);
+
+ALTER TABLE demat_freeze_log
+    ADD CONSTRAINT FK_Demat_Freeze_Log_User FOREIGN KEY (user_id) REFERENCES "user" (id);
