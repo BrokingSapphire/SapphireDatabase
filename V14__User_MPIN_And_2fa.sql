@@ -28,3 +28,21 @@ CREATE TABLE user_2fa
     CONSTRAINT FK_User_2fa FOREIGN KEY (user_id) REFERENCES "user" (id),
     CONSTRAINT UQ_User_2fa UNIQUE (user_id)
 );
+
+ALTER TABLE user_2fa 
+ADD COLUMN method VARCHAR(20) NOT NULL DEFAULT 'disabled';
+
+ALTER TABLE user_2fa 
+ALTER COLUMN secret DROP NOT NULL;
+
+UPDATE user_2fa 
+SET method = 'authenticator' 
+WHERE secret IS NOT NULL;
+
+UPDATE user_2fa 
+SET method = 'sms_otp' 
+WHERE secret IS NULL AND method = 'disabled';
+
+ALTER TABLE user_2fa 
+ADD CONSTRAINT CHK_User_2fa_Method 
+CHECK (method IN ('disabled', 'sms_otp', 'authenticator'));
