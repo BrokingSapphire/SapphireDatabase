@@ -109,18 +109,6 @@ CREATE TABLE demat_freeze_log
     CONSTRAINT FK_Demat_Freeze_Log_User FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 
-CREATE TABLE user_settlement_frequency
-(
-    id                    SERIAL,
-    user_id               CHAR(6)                     NOT NULL,
-    settlement_frequency  funds_settlement_frequency  NOT NULL,
-    created_at            TIMESTAMP                   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at            TIMESTAMP                   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT PK_User_Settlement_Frequency_Id PRIMARY KEY (id),
-    CONSTRAINT FK_User_Settlement_Frequency_User FOREIGN KEY (user_id) REFERENCES "user" (id),
-    CONSTRAINT UQ_User_Settlement_Frequency_User UNIQUE (user_id)
-);
-
 ALTER TABLE demat_freeze_log
     ADD CONSTRAINT CHK_Freeze_Action_Status 
     CHECK (
