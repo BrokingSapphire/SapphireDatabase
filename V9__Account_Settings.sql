@@ -43,3 +43,15 @@ ALTER TABLE user_preferences
 
 ALTER TABLE user_preferences
     ALTER COLUMN chart_provider DROP DEFAULT;
+
+CREATE TABLE user_settlement_frequency
+(
+    id                    SERIAL,
+    user_id               CHAR(6)                     NOT NULL,
+    settlement_frequency  funds_settlement_frequency  NOT NULL,
+    created_at            TIMESTAMP                   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            TIMESTAMP                   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_User_Settlement_Frequency_Id PRIMARY KEY (id),
+    CONSTRAINT FK_User_Settlement_Frequency_User FOREIGN KEY (user_id) REFERENCES "user" (id),
+    CONSTRAINT UQ_User_Settlement_Frequency_User UNIQUE (user_id)
+);
