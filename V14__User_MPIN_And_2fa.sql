@@ -46,3 +46,25 @@ WHERE secret IS NULL AND method = 'disabled';
 ALTER TABLE user_2fa 
 ADD CONSTRAINT CHK_User_2fa_Method 
 CHECK (method IN ('disabled', 'sms_otp', 'authenticator'));
+
+CREATE TABLE user_login_history
+(
+    id               SERIAL,
+    user_id          CHAR(6)      NOT NULL,
+    email            VARCHAR(100) NOT NULL,
+    ip_address       INET         NOT NULL,
+    user_agent       TEXT         NOT NULL,
+    browser          VARCHAR(100),
+    device           VARCHAR(100),
+    device_type      VARCHAR(50),
+    location_country VARCHAR(100),
+    location_region  VARCHAR(100),
+    location_city    VARCHAR(100),
+    login_time       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    success          BOOLEAN      NOT NULL DEFAULT FALSE,
+    failure_reason   VARCHAR(255),
+    session_id       VARCHAR(255),
+    
+    CONSTRAINT PK_User_Login_History_Id PRIMARY KEY (id),
+    CONSTRAINT FK_User_Login_History_User FOREIGN KEY (user_id) REFERENCES "user" (id)
+);
