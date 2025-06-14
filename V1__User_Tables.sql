@@ -343,3 +343,7 @@ CREATE TABLE user_sessions
             AND (session_end IS NULL OR last_activity <= session_end)
         )
 );
+
+-- Remove the unique constraint on email to allow multiple accounts per email
+ALTER TABLE "user" 
+DROP CONSTRAINT UQ_User_Email;
