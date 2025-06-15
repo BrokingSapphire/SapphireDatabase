@@ -68,3 +68,21 @@ CREATE TABLE user_login_history
     CONSTRAINT PK_User_Login_History_Id PRIMARY KEY (id),
     CONSTRAINT FK_User_Login_History_User FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
+
+-- User FCM-Token
+CREATE TABLE user_fcm_tokens (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    fcm_token TEXT NOT NULL,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Foreign key constraint
+    CONSTRAINT fk_user_fcm_tokens_user_id 
+        FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE,
+    
+    -- Unique constraint for user_id + fcm_token combination
+    CONSTRAINT uq_user_fcm_token 
+        UNIQUE (user_id, fcm_token)
+);
